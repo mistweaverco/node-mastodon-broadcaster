@@ -1,0 +1,26 @@
+{
+  "name": "node-mastodon-broadcaster",
+  "version": "1.0.0",
+  "description": "Broadcasts Mastodon Toots to the World!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superevilmegaco/mastodon-broadcaster.git"
+  },
+  "author": "Marco Kellershoff <hello@walialu.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/superevilmegaco/mastodon-broadcaster/issues"
+  },
+  "homepage": "https://github.com/superevilmegaco/mastodon-broadcaster#readme",
+  "dependencies": {
+    "fetch": "^1.1.0",
+    "forever": "^0.15.3",
+    "moment": "^2.22.0",
+    "rss-parser": "^3.1.2",
+    "twitter": "^1.7.1"
+  }
+}
