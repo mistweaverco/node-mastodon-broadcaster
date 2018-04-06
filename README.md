@@ -45,6 +45,6 @@ create one [here](https://apps.twitter.com/app/new).
 Run the script forever with `forever`
 
 ```bash
-nohup forever app.js >> log/error.log &
+nohup node_modules/.bin/forever app.js >> log/error.log &
 ```
 
