@@ -1,10 +1,10 @@
 module.exports = {
         mastodon: {
-                pullInterval: 60,
+                pollInterval: 60,
                 feeds: [
                         {
                                 url: 'https://jambo.social/@walialu.atom'
-                                pullInterval: 30
+                                pollInterval: 30
                         },
                         'https://jambo.social/@laesterpuppe.atom',
                         'https://jambo.social/@noerchen.atom',

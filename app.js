@@ -63,28 +63,28 @@ const onFeedCallback = (feed, feedUrl) =>  {
 
 const forEachFeedUrlCallback = (feedConfig) => {
         let feedUrl;
-        let pullInterval = config.mastodon.pullInterval;
+        let pollInterval = config.mastodon.pollInterval;
         if (typeof feedConfig === 'string') {
                 feedUrl = feedConfig;
         } else {
-                pullInterval = (feedConfig.pullInterval) ? feedConfig.pullInterval*1000 : pullInterval;
+                pollInterval = (feedConfig.pollInterval) ? feedConfig.pollInterval*1000 : pollInterval;
                 feedUrl = feedConfig.url;
         }
         feedParser.parseURL(feedUrl)
                 .then((item) => {
                         onFeedCallback(item, feedUrl);
-                        setTimeout(pullFeeds, pullInterval);
+                        setTimeout(pollFeeds, pollInterval);
                 }).catch((feedError) => {
                         console.log(feedError);
-                        setTimeout(pullFeeds, pullInterval);
+                        setTimeout(pollFeeds, pollInterval);
                 });
 };
 
 config.mastodon.feeds.forEach(feedConfig => lastActionDates[feedConfig] = moment().unix());
 
-const pullFeeds = () => {
+const pollFeeds = () => {
         config.mastodon.feeds.forEach(forEachFeedUrlCallback);
 };
 
-pullFeeds();
+pollFeeds();
 
