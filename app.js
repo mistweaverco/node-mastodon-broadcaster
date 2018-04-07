@@ -80,10 +80,10 @@ const forEachFeedUrlCallback = (feedConfig) => {
                 });
 };
 
-config.mastodon.feeds.foreach(feedConfig => lastActionDates[feedConfig] = moment().unix());
+config.mastodon.feeds.forEach(feedConfig => lastActionDates[feedConfig] = moment().unix());
 
 const pullFeeds = () => {
-        config.mastodon.feeds.foreach(forEachFeedUrlCallback);
+        config.mastodon.feeds.forEach(forEachFeedUrlCallback);
 };
 
 pullFeeds();
