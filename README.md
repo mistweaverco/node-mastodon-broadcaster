@@ -35,6 +35,8 @@ yarn
 npm install
 ```
 
+## Configuration
+
 Copy `config.js.dist` to `config.js` and edit the values accordingly.
 
 ```bash
@@ -44,9 +46,17 @@ cp config.js.dist config.js && vim config.js
 If you don't have an Twitter App ID yet,
 create one [here](https://apps.twitter.com/app/new).
 
+## Start the *daemon*
+
 Run the script forever with `forever`
 
 ```bash
 nohup node_modules/.bin/forever app.js >> log/error.log &
+```
+
+## Stop the *daemon*
+
+```bash
+nohup node_modules/.bin/forever stop app.js
 ```
 
