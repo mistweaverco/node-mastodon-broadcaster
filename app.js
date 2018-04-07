@@ -6,7 +6,7 @@ const feedParser = new parser();
 const fetchUrl = require('fetch').fetchUrl;
 const moment = require('moment');
 
-let lastActionDate = moment().unix();
+let lastActionDates = [];
 
 const xPost = (t, opts) => {
         switch(t) {
@@ -31,7 +31,7 @@ const xPost = (t, opts) => {
 };
 
 
-const forEachFeedItemCallback = (item) => {
+const forEachFeedItemCallback = (item, lastActionDate) => {
         const feedItemPubDate = item.pubDate;
         const feedItemPubUnixtime = moment(feedItemPubDate).unix();
         if (feedItemPubUnixtime > lastActionDate) {
@@ -54,16 +54,37 @@ const forEachFeedItemCallback = (item) => {
         }
 };
 
-const onFeedCallback = (feed) =>  feed.items.reverse().forEach(forEachFeedItemCallback);
-
-const pullFeed = () => {
-        feedParser.parseURL(config.mastodon.feedUrl)
-                .then(onFeedCallback)
-                .catch((feedError) => {
-                        console.log(feedError);
-                });
-        setTimeout(pullFeed, config.pullInterval*1000);
+const onFeedCallback = (feed, feedUrl) =>  {
+        let items = feed.items.reverse();
+        items.forEach((item) => {
+                forEachFeedItemCallback(item, lastActionDates[feedUrl]);
+        });
 };
 
-pullFeed();
+const forEachFeedUrlCallback = (feedConfig) => {
+        let feedUrl;
+        let pullInterval = config.mastodon.pullInterval;
+        if (typeof feedConfig === 'string') {
+                feedUrl = feedConfig;
+        } else {
+                pullInterval = (feedConfig.pullInterval) ? feedConfig.pullInterval*1000 : pullInterval;
+                feedUrl = feedConfig.url;
+        }
+        feedParser.parseURL(feedUrl)
+                .then((item) => {
+                        onFeedCallback(item, feedUrl);
+                }).catch((feedError) => {
+                        console.log(feedError);
+                }).finally(() => {
+                        setTimeout(pullFeeds, pullInterval);
+                });
+};
+
+config.mastodon.feeds.foreach(feedConfig => lastActionDates[feedConfig] = moment().unix());
+
+const pullFeeds = () => {
+        config.mastodon.feeds.foreach(forEachFeedUrlCallback);
+};
+
+pullFeeds();
 

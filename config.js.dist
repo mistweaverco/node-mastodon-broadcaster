@@ -1,9 +1,17 @@
 module.exports = {
-        pullInterval: 10,
         mastodon: {
-                feedUrl: 'https://jambo.social/@walialu.atom',
+                pullInterval: 60,
+                feeds: [
+                        {
+                                url: 'https://jambo.social/@walialu.atom'
+                                pullInterval: 30
+                        },
+                        'https://jambo.social/@laesterpuppe.atom',
+                        'https://jambo.social/@noerchen.atom',
+                ],
         },
         twitter: {
+                max_tweet_length: 220,
                 consumer_key: '',
                 consumer_secret: '',
                 access_token_key: '',

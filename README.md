@@ -5,6 +5,8 @@
 Broadcasts your toots to the world.
 Written in NodeJS.
 
+Multiple accounts supported.
+
 ## Supported networks
 
 - Twitter
