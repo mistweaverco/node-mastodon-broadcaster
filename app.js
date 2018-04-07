@@ -73,9 +73,9 @@ const forEachFeedUrlCallback = (feedConfig) => {
         feedParser.parseURL(feedUrl)
                 .then((item) => {
                         onFeedCallback(item, feedUrl);
+                        setTimeout(pullFeeds, pullInterval);
                 }).catch((feedError) => {
                         console.log(feedError);
-                }).finally(() => {
                         setTimeout(pullFeeds, pullInterval);
                 });
 };
