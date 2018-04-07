@@ -31,11 +31,12 @@ const xPost = (t, opts) => {
 };
 
 
-const forEachFeedItemCallback = (item, lastActionDate) => {
+const forEachFeedItemCallback = (item, feedUrl) => {
+        const lastActionDate = lastActionDates[feedUrl];
         const feedItemPubDate = item.pubDate;
         const feedItemPubUnixtime = moment(feedItemPubDate).unix();
         if (feedItemPubUnixtime > lastActionDate) {
-                lastActionDate = feedItemPubUnixtime;
+                lastActionDates[feedUrl] = feedItemPubUnixtime;
                 if (item.link.endsWith('/activity')) {
                         fetchUrl(item.link, (activityError, activityMeta, activity) => {
                                 const json = JSON.parse(activity.toString('utf-8'));
@@ -57,7 +58,7 @@ const forEachFeedItemCallback = (item, lastActionDate) => {
 const onFeedCallback = (feed, feedUrl) =>  {
         let items = feed.items.reverse();
         items.forEach((item) => {
-                forEachFeedItemCallback(item, lastActionDates[feedUrl]);
+                forEachFeedItemCallback(item, feedUrl);
         });
 };
 
