@@ -1,20 +1,43 @@
 module.exports = {
         mastodon: {
-                pollInterval: 60,
+                // Global poll interval in seconds.
+                // This defines the interval which is used to fetch all feeds.
+                // You can always override the interval in each feed item
+                // itself.
+                //
+                // See the `laesterpuppe` feed for how to override the default poll
+                // interval.
+                pollInterval: 120,
                 feeds: [
                         {
-                                url: 'https://jambo.social/@walialu.atom'
-                                pollInterval: 30
+                                url: 'https://jambo.social/@walialu.atom',
+                                twitter: {
+                                        access_token_key: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                                        access_token_secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                                },
                         },
-                        'https://jambo.social/@laesterpuppe.atom',
-                        'https://jambo.social/@noerchen.atom',
+                        {
+                                url: 'https://jambo.social/@laesterpuppe.atom',
+                                // This overrides the default pollInterval.
+                                // This feed will be fetched every 60 seconds.
+                                pollInterval: 60,
+                                twitter: {
+                                        access_token_key: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                                        access_token_secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                                },
+                        },
+                        {
+                                url: 'https://jambo.social/@noerchen.atom',
+                                twitter: {
+                                        access_token_key: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                                        access_token_secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                                },
+                        },
                 ],
         },
         twitter: {
                 max_tweet_length: 220,
                 consumer_key: '',
                 consumer_secret: '',
-                access_token_key: '',
-                access_token_secret: '',
         },
 };

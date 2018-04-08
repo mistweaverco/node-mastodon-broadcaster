@@ -4,7 +4,10 @@
   "description": "Broadcasts Mastodon Toots to the World!",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nohup ./node_modules/.bin/forever --minUptime 1000ms --spinSleepTime 1000ms ./src/app.js >> ./log/error.log 2>&1 &",
+    "stop": "nohup ./node_modules/.bin/forever stop ./src/app.js",
+    "debugstart": "node ./src/app.js"
   },
   "repository": {
     "type": "git",
