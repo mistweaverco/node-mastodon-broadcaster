@@ -24,17 +24,24 @@ GLOBAL_FEED_CONFIGS.set(getDefaultPollInterval(), []);
 
 const broadcastTo = (t, opts, client) => {
         let config = getConfig();
+        let attachTootLink = false;
         switch(t) {
         case 'twitter': {
-                let status = opts.status;
+                let message = opts.status;
                 if (opts.boost) {
-                        status = `BT: ${status}`;
+                        message = `BT: ${message}`;
+                        attachTootLink = true;
                 }
-                if (status.length > config.twitter.max_tweet_length) {
-                        status = status.substring(0, config.twitter.max_tweet_length);
+                if (message.length > config.twitter.max_tweet_length) {
+                        message = message.substring(0, config.twitter.max_tweet_length) + ' ...';
+                        attachTootLink = true;
                 }
+                if (attachTootLink === true) {
+                        message = message + ' ' + opts.mastodonRef;
+                }
+                console.log(message);
                 client.post('statuses/update', {
-                        status: `${status} ${opts.mastodonRef}`
+                        status: message,
                 }).catch((error) => {
                         Log(error);
                 });
@@ -88,12 +95,12 @@ const pollFeed = (pollInterval, feedConfig) => {
                         onFeedCallback(feed, feedConfig);
                         setTimeout(() => {
                                 pollFeed(pollInterval, feedConfig);
-                        }, pollInterval);
+                        }, pollInterval*1000);
                 }).catch((feedError) => {
                         Log(feedError);
                         setTimeout(() => {
                                 pollFeed(pollInterval, feedConfig);
-                        }, pollInterval);
+                        }, pollInterval*1000);
                 });
 };
 
