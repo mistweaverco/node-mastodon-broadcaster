@@ -28,15 +28,15 @@ const broadcastTo = (t, opts, client) => {
         switch(t) {
         case 'twitter': {
                 let message = opts.message;
-                let tootLink = opts.mastodonRef;
+                let tootLink = opts.mastodonRef.object;
                 if (opts.isReply) {
                         message = `Reply to ${opts.replyUrl}: ${message}`;
-                        tootLink = opts.mastodonRef.id;
+                        tootLink = opts.mastodonRef.object.id;
                         attachTootLink = true;
                 }
                 if (opts.isBoost) {
                         message = `BT: ${message}`;
-                        tootLink = opts.mastodonRef.id;
+                        tootLink = opts.mastodonRef.object;
                         attachTootLink = true;
                 }
                 if (message.length > config.twitter.max_tweet_length) {
@@ -78,7 +78,7 @@ const forEachFeedItemCallback = (feedItem, feedConfig, clients) => {
                                 isBoost: isBoost,
                                 carbonCopy: carbonCopy,
                                 message: feedItem.contentSnippet,
-                                mastodonRef: json.object,
+                                mastodonRef: json,
                         }, clients.twitter);
                 });
         }
