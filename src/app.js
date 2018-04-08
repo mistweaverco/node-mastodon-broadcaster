@@ -27,9 +27,16 @@ const broadcastTo = (t, opts, client) => {
         let attachTootLink = false;
         switch(t) {
         case 'twitter': {
-                let message = opts.status;
-                if (opts.boost) {
+                let message = opts.message;
+                let tootLink = opts.mastodonRef;
+                if (opts.isReply) {
+                        message = `Reply to ${opts.replyUrl}: ${message}`;
+                        tootLink = opts.mastodonRef.id;
+                        attachTootLink = true;
+                }
+                if (opts.isBoost) {
                         message = `BT: ${message}`;
+                        tootLink = opts.mastodonRef.id;
                         attachTootLink = true;
                 }
                 if (message.length > config.twitter.max_tweet_length) {
@@ -37,9 +44,8 @@ const broadcastTo = (t, opts, client) => {
                         attachTootLink = true;
                 }
                 if (attachTootLink === true) {
-                        message = message + ' ' + opts.mastodonRef;
+                        message = message + ' ' + tootLink;
                 }
-                console.log(message);
                 client.post('statuses/update', {
                         status: message,
                 }).catch((error) => {
@@ -59,21 +65,22 @@ const forEachFeedItemCallback = (feedItem, feedConfig, clients) => {
         const feedItemPubUnixtime = moment(feedItemPubDate).unix();
         if (feedItemPubUnixtime > lastPoll) {
                 feedConfig.lastPoll = feedItemPubUnixtime;
-                if (feedItem.link.endsWith('/activity')) {
-                        fetchUrl(feedItem.link, (activityError, activityMeta, activity) => {
-                                const json = JSON.parse(activity.toString('utf-8'));
-                                broadcastTo('twitter', {
-                                        boost: true,
-                                        status: feedItem.contentSnippet,
-                                        mastodonRef: json.object,
-                                }, clients.twitter);
-                        });
-                } else {
+                const activityUrl = (feedItem.link.endsWith('/activity')) ? feedItem.link : feedItem.link + '/activity';
+                fetchUrl(activityUrl, (activityError, activityMeta, activity) => {
+                        const json = JSON.parse(activity.toString('utf-8'));
+                        const isReply = (json.object && json.object.inReplyTo) ? true : false;
+                        const replyUrl =(isReply) ? json.object.inReplyTo : null;
+                        const isBoost = (json.type === 'Announce') ? true : false;
+                        const carbonCopy = (isBoost) ? json.cc : null;
                         broadcastTo('twitter', {
-                                status: feedItem.contentSnippet,
-                                mastodonRef: feedItem.link,
+                                isReply: isReply,
+                                replyUrl: replyUrl,
+                                isBoost: isBoost,
+                                carbonCopy: carbonCopy,
+                                message: feedItem.contentSnippet,
+                                mastodonRef: json.object,
                         }, clients.twitter);
-                }
+                });
         }
 };
 
