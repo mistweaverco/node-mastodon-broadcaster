@@ -4,6 +4,7 @@ const parser = require('rss-parser');
 const feedParser = new parser();
 const fetchUrl = require('fetch').fetchUrl;
 const moment = require('moment');
+const h2p = require('html2plaintext');
 
 const getConfig = () => {
         return CONFIG;
@@ -77,7 +78,7 @@ const forEachFeedItemCallback = (feedItem, feedConfig, clients) => {
                                 replyUrl: replyUrl,
                                 isBoost: isBoost,
                                 carbonCopy: carbonCopy,
-                                message: feedItem.contentSnippet,
+                                message: h2p(feedItem.content),
                                 mastodonRef: json,
                         }, clients.twitter);
                 });
