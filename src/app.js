@@ -20,6 +20,14 @@ const Log = (...logs) => {
         console.log.apply(console, args);
 };
 
+const shortenText = (text, maxLength, appendDots) => {
+        let shortened = text.substr(0, maxLength);
+        shortened = shortened.substr(0, Math.min(shortened.length, shortened.lastIndexOf(' ')));
+        if (appendDots)
+                shortened = shortened + ' ...';
+        return shortened;
+};
+
 const GLOBAL_FEED_CONFIGS = new Map();
 GLOBAL_FEED_CONFIGS.set(getDefaultPollInterval(), []);
 
@@ -49,7 +57,7 @@ const broadcastTo = (t, opts, client) => {
                         attachTootLink = true;
                 }
                 if (message.length > config.twitter.max_tweet_length) {
-                        message = message.substring(0, config.twitter.max_tweet_length) + ' ...';
+                        message = shortenText(message, config.twitter.max_tweet_length, true);
                         attachTootLink = true;
                 }
                 if (attachTootLink === true) {
