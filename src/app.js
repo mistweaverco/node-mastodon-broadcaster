@@ -29,7 +29,15 @@ const broadcastTo = (t, opts, client) => {
         switch(t) {
         case 'twitter': {
                 let message = opts.message;
-                let tootLink = opts.mastodonRef.object;
+                let tootLink = '';
+                if (typeof opts.mastodonRef === 'object' &&
+                        'object' in opts.mastodonRef &&
+                        typeof opts.mastodonRef.object === 'object' &&
+                        'id' in opts.mastodonRef.object) {
+                        tootLink = opts.mastodonRef.object.id;
+                } else if (typeof opts.mastodonRef === 'object' && typeof opts.mastodonRef.object === 'string') {
+                        tootLink = opts.mastodonRef.object;
+                }
                 if (opts.isReply) {
                         message = `Reply to ${opts.replyUrl}: ${message}`;
                         tootLink = opts.mastodonRef.object.id;
