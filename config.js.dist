@@ -15,6 +15,12 @@ module.exports = {
                                         access_token_key: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                                         access_token_secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                                 },
+                                skip: {
+                                        twitter: [
+                                                'reply',
+                                                'boost',
+                                        ]
+                                },
                         },
                         {
                                 url: 'https://jambo.social/@laesterpuppe.atom',

@@ -89,6 +89,18 @@ const forEachFeedItemCallback = (feedItem, feedConfig, clients) => {
                         const replyUrl =(isReply) ? json.object.inReplyTo : null;
                         const isBoost = (json.type === 'Announce') ? true : false;
                         const carbonCopy = (isBoost) ? json.cc : null;
+                        let skip = undefined;
+                        let trimmed = undefined;
+                        if (feedConfig.skip && feedConfig.skip.twitter) {
+                                skip = feedConfig.skip.twitter;
+                                trimmed = feedItem.content.trim();
+                                if ((isReply || trimmed.startsWith('@')) && skip.includes('reply')) {
+                                        return;
+                                }
+                                if (isBoost && skip.includes('boost')) {
+                                        return;
+                                }
+                        }
                         broadcastTo('twitter', {
                                 isReply: isReply,
                                 replyUrl: replyUrl,
