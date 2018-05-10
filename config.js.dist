@@ -15,6 +15,9 @@ module.exports = {
                                         access_token_key: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                                         access_token_secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                                 },
+                                facebook: {
+                                        access_token: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                                },
                                 skip: {
                                         twitter: [
                                                 'reply',
@@ -45,5 +48,10 @@ module.exports = {
                 max_tweet_length: 220,
                 consumer_key: '',
                 consumer_secret: '',
+        },
+        facebook: {
+                version: '2.4',
+                appId: 'XXXXXXXXXXXXXXX',
+                appSecret: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
         },
 };

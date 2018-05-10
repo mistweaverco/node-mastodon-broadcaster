@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/superevilmegaco/mastodon-broadcaster#readme",
   "dependencies": {
+    "fb": "^2.0.0",
     "fetch": "^1.1.0",
     "forever": "^0.15.3",
     "html2plaintext": "^2.0.1",
